@@ -1,9 +1,9 @@
 [build]
-  # This tells Netlify to jump into the 'web' folder before doing anything else
-  base = "web"
+  # 1. Point Netlify to the exact folder where package.json lives
+  base = "website/web"
   
-  # Netlify automatically handles 'npm install', so just run the build
+  # 2. The command to build your Vite project
   command = "npm run build"
   
-  # Since Netlify jumps into 'web' first, the dist folder is right here
+  # 3. The folder Vite generates inside website/web/
   publish = "dist"
