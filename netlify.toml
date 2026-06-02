@@ -1,0 +1,9 @@
+[build]
+  # This tells Netlify to jump into the 'web' folder before doing anything else
+  base = "web"
+  
+  # Netlify automatically handles 'npm install', so just run the build
+  command = "npm run build"
+  
+  # Since Netlify jumps into 'web' first, the dist folder is right here
+  publish = "dist"
