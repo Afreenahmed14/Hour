@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import logo from "../assets/logoweb.png";
 
-export default function Navbar({ currentPage, navigate, isAdminLoggedIn }) {
+export default function Navbar({ currentPage, navigate }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -24,7 +25,6 @@ export default function Navbar({ currentPage, navigate, isAdminLoggedIn }) {
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  // "Hire Developers" is REMOVED from public nav — admin-only via dashboard
   const links = [
     { id: "home",         label: "Home" },
     { id: "about",        label: "About" },
@@ -48,15 +48,8 @@ export default function Navbar({ currentPage, navigate, isAdminLoggedIn }) {
         }}
       >
         {/* Logo */}
-        <button className="nav-logo" onClick={() => go("home")}>
-          <div className="nav-logo-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-            </svg>
-          </div>
-          <span className="nav-logo-text">
-            Hourly<em>Recruit</em>
-          </span>
+        <button className="nav-logo" onClick={() => go("home")} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+          <img src={logo} alt="HourlyRecruit logo" style={{ height: 44, width: "auto", objectFit: "contain", display: "block" }} />
         </button>
 
         {/* Desktop links */}
@@ -72,31 +65,21 @@ export default function Navbar({ currentPage, navigate, isAdminLoggedIn }) {
           ))}
         </div>
 
-        {/* Desktop right side */}
+        {/* Desktop CTA */}
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <button className="nav-cta nav-cta-desktop" onClick={() => go("contact")}>
             Get Started
           </button>
-
-          {/* Admin Profile Icon — always visible, goes to admin login/dashboard */}
+          {/* Hidden Admin button — subtle, desktop only */}
           <button
-            className={`nav-admin-avatar${isAdminLoggedIn ? " logged-in" : ""}`}
+            className="nav-admin-btn"
             onClick={() => go("admin")}
-            title={isAdminLoggedIn ? "Admin Dashboard" : "Admin Login"}
-            aria-label={isAdminLoggedIn ? "Admin Dashboard" : "Admin Login"}
+            title="Admin Portal"
+            aria-label="Admin Portal"
           >
-            {isAdminLoggedIn ? (
-              // Filled avatar when logged in
-              <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 17, height: 17 }}>
-                <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
-              </svg>
-            ) : (
-              // Shield/lock icon when not logged in
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 16, height: 16 }}>
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
-            )}
-            {isAdminLoggedIn && <span className="admin-active-dot" />}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 16, height: 16 }}>
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
           </button>
         </div>
 
@@ -121,16 +104,10 @@ export default function Navbar({ currentPage, navigate, isAdminLoggedIn }) {
 
       {/* Mobile drawer */}
       <div className={`mobile-drawer${menuOpen ? " open" : ""}`} role="dialog" aria-modal="true">
+        {/* Drawer header */}
         <div className="drawer-header">
           <div className="drawer-logo">
-            <div className="nav-logo-icon" style={{ width: 32, height: 32, borderRadius: 9 }}>
-              <svg viewBox="0 0 24 24" style={{ width: 17, height: 17, fill: "white" }}>
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-              </svg>
-            </div>
-            <span style={{ fontFamily: "var(--font-head)", fontWeight: 800, fontSize: 17, color: "var(--navy)", letterSpacing: "-.2px" }}>
-              Hourly<span style={{ color: "var(--blue)" }}>Recruit</span>
-            </span>
+            <img src={logo} alt="HourlyRecruit logo" style={{ height: 36, width: "auto", objectFit: "contain", display: "block" }} />
           </div>
           <button className="drawer-close" onClick={() => setMenuOpen(false)} aria-label="Close menu">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" style={{ width: 20, height: 20 }}>
@@ -140,6 +117,7 @@ export default function Navbar({ currentPage, navigate, isAdminLoggedIn }) {
           </button>
         </div>
 
+        {/* Nav links */}
         <div className="drawer-links">
           {links.map((l, i) => (
             <button
@@ -157,6 +135,7 @@ export default function Navbar({ currentPage, navigate, isAdminLoggedIn }) {
           ))}
         </div>
 
+        {/* CTA at bottom */}
         <div className="drawer-cta-wrap">
           <button
             className="btn-primary"
@@ -171,71 +150,45 @@ export default function Navbar({ currentPage, navigate, isAdminLoggedIn }) {
           <p style={{ textAlign: "center", fontSize: 12, color: "var(--gray-400)", marginTop: 10 }}>
             No contracts · Start in 48 hours
           </p>
-          {/* Admin access in mobile drawer */}
+          {/* Admin access in mobile drawer — subtle */}
           <button
             onClick={() => go("admin")}
             style={{
               display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-              width: "100%", marginTop: 14, background: isAdminLoggedIn ? "rgba(99,102,241,.08)" : "none",
-              border: isAdminLoggedIn ? "1px solid rgba(99,102,241,.2)" : "none",
-              borderRadius: 8,
-              fontSize: 11, fontWeight: 700, color: isAdminLoggedIn ? "#6366f1" : "var(--gray-400)",
+              width: "100%", marginTop: 14, background: "none", border: "none",
+              fontSize: 11, fontWeight: 600, color: "var(--gray-400)",
               cursor: "pointer", letterSpacing: ".04em", textTransform: "uppercase",
-              padding: "8px 0",
+              padding: "6px 0",
             }}
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 13, height: 13 }}>
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-              <circle cx="12" cy="7" r="4" />
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 12, height: 12 }}>
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
             </svg>
-            {isAdminLoggedIn ? "Admin Dashboard" : "Admin Portal"}
+            Admin Portal
           </button>
         </div>
       </div>
 
       <style>{`
-        /* ── Admin avatar button ── */
-        .nav-admin-avatar {
-          position: relative;
-          width: 36px;
-          height: 36px;
+        /* ── Admin button ── */
+        .nav-admin-btn {
+          width: 34px;
+          height: 34px;
           display: flex;
           align-items: center;
           justify-content: center;
           background: var(--off, #f0f4ff);
           border: 1.5px solid var(--gray-100, #e8eef8);
-          border-radius: 50%;
+          border-radius: 8px;
           cursor: pointer;
           color: var(--gray-400, #8899bb);
           transition: all .18s;
           flex-shrink: 0;
         }
-        .nav-admin-avatar:hover {
+        .nav-admin-btn:hover {
           background: var(--blue-glow, rgba(37,99,235,.12));
           border-color: rgba(37,99,235,.3);
           color: var(--blue, #1a56db);
-          transform: scale(1.05);
-        }
-        .nav-admin-avatar.logged-in {
-          background: linear-gradient(135deg, #6366f1, #8b5cf6);
-          border-color: rgba(99,102,241,.4);
-          color: white;
-          box-shadow: 0 4px 12px rgba(99,102,241,.35);
-        }
-        .nav-admin-avatar.logged-in:hover {
-          opacity: .9;
-          transform: scale(1.05);
-          color: white;
-        }
-        .admin-active-dot {
-          position: absolute;
-          bottom: 1px;
-          right: 1px;
-          width: 9px;
-          height: 9px;
-          background: #22c55e;
-          border: 2px solid white;
-          border-radius: 50%;
         }
 
         /* ── Hamburger button ── */
@@ -361,10 +314,11 @@ export default function Navbar({ currentPage, navigate, isAdminLoggedIn }) {
           to   { opacity: 1; transform: translateX(0); }
         }
 
+        /* ── Responsive breakpoints ── */
         @media (max-width: 900px) {
           .nav-links { display: none !important; }
           .nav-cta-desktop { display: none !important; }
-          .nav-admin-avatar { display: none !important; }
+          .nav-admin-btn { display: none !important; }
           .nav-hamburger { display: flex !important; }
           .mobile-backdrop { display: block; }
           .mobile-drawer { display: flex; }

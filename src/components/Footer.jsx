@@ -30,7 +30,7 @@ export default function Footer({ navigate }) {
 
         <div className="footer-col">
           <h4>Quick Links</h4>
-          {[["home","Home"],["about","About"],["hire","Hire Developers"],["technologies","Technologies"],["contact","Contact"]].map(([id,label]) => (
+          {[["home","Home"],["about","About"],["technologies","Technologies"],["how","How It Works"],["contact","Contact"]].map(([id,label]) => (
             <button key={id} className="footer-col-link" onClick={() => navigate(id)}>{label}</button>
           ))}
         </div>
